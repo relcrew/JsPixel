@@ -2,6 +2,7 @@
 <html lang="fr">
     <head>
         <meta charset="UTF-8">
+        <meta name="description" content="JsPixel">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
@@ -68,10 +69,10 @@
     </style>
     <body>
         <header>
-            <button onclick="noT(1)">noTimeout</button>
-            <button onclick="noT(2)">noTransition</button>
+            <button onclick="G(1)">noTimeout</button>
+            <button onclick="G(2)">noTransition</button>
+            <button onclick="G(3)">randomColor</button>
             <button onclick="createGrid()">clear</button>
-            
         </header>
         <div class="block">
             
@@ -80,7 +81,7 @@
 
             let are_return = false;
             let Timeout = true;
-
+            let Rtable = false;
             let height = parseInt((screen.height)/30);
             let width = parseInt(screen.width/30)+2;
 
@@ -102,7 +103,7 @@
                 };
                 cursor();
             };
-            function noT(a){
+            function G(a){
                 if(a==1){
                     Timeout = (Timeout == true ? false : true);
                 }
@@ -116,6 +117,9 @@
                         }
                         
                     })
+                }
+                if(a==3){
+                    Rtable = (Rtable == true ? false : true);
                 }
             }
             function timeout(cube){
@@ -155,17 +159,20 @@
                                         cas.style.borderRadius = "100%";
                                         cas.style.zIndex = "-1";
                                         are_return = false;
-                                        timeout(cas);
                                     }else{
                                         cas.style.borderRadius = "0px";
                                         let t = parseInt(Math.random() * (9 + -1)) + -1;
-                                        cas.style.backgroundColor = tab[t];
+                                        if(Rtable){
+                                            cas.style.backgroundColor = "#"+Math.floor(Math.random()*16777215).toString(16);
+                                        }else{
+                                            cas.style.backgroundColor = tab[t];
+                                        }
                                         cas.style.transform = "scale(1)";
                                         cas.style.borderRadius = "0";
                                         cas.style.zIndex = "10";
                                         are_return = true;
-                                        timeout(cas);
                                     }
+                                    timeout(cas);
                                     i++;
                                 }
                                 j++;
