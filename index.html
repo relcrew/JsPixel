@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <style>
+        body{
+            background: #000;
+            margin: 0;
+            overflow: hidden;
+            height: 100vh;
+            width: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        header{
+            display: flex;
+            align-items: center;
+            background-color: aliceblue;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 50px;
+            z-index: 100;
+        }
+        button{
+            height: 30px;
+            width: fit;
+            background-color: aliceblue;
+            border-radius: 7px;
+            margin-left: 10px;
+        }
+        .block{
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            height: fit-content;
+            width: fit-content;
+            transform: none;
+        }
+        .block:hover{
+            transform: none;
+        }
+        .column{
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            height: fit-content;
+            width: fit-content;
+            transform: none;
+        }
+        .column:hover{
+            transform: none;
+        }
+        div{
+            height: 30px;
+            width: 30px;
+            border-radius: 100%;
+            
+        }
+        .T{
+            transition: ease-out 0.3s;
+        }
+        
+    </style>
+    <body>
+        <header>
+            <button onclick="noT(1)">noTimeout</button>
+            <button onclick="noT(2)">noTransition</button>
+            <button onclick="createGrid()">clear</button>
+            
+        </header>
+        <div class="block">
+            
+        </div>
+        <script>
+
+            let are_return = false;
+            let Timeout = true;
+
+            let height = parseInt((screen.height)/30);
+            let width = parseInt(screen.width/30)+2;
+
+            function createGrid(){
+                let c=1;
+                let s=1;
+                document.querySelector(".block").innerHTML = ' ';
+                while(c<width){
+                    let firstDiv = document.createElement('div');
+                    firstDiv.id= c;
+                    firstDiv.classList.add('column');
+                    document.querySelector(".block").appendChild(firstDiv);
+                    while(s<height){
+                        firstDiv.innerHTML += '<div id="'+s+'°'+c+'" class="T" style="background-color: black;"></div>';
+                        s++;
+                    };
+                    c++;
+                    s=1;
+                };
+                cursor();
+            };
+            function noT(a){
+                if(a==1){
+                    Timeout = (Timeout == true ? false : true);
+                }
+                if(a==2){
+                    let element = document.querySelectorAll('div');
+                    element.forEach((element)=>{
+                        if(element.className == 'T'){
+                            element.classList.remove('T');
+                        }else{
+                            element.classList.add('T');
+                        }
+                        
+                    })
+                }
+            }
+            function timeout(cube){
+                if(Timeout){
+                    setTimeout(() => {
+                        cube.style.backgroundColor = null;
+                        cube.style.borderRadius = null;
+                        cube.style.zIndex = null;
+                    }, 1000);
+                }
+            }   
+            function cursor(){
+                const column = document.querySelectorAll('.column');
+                column.forEach((parent)=>{
+                    let children = parent.querySelectorAll('div');
+                    children.forEach((child)=>{
+                        child.addEventListener("mouseover", ()=>{
+
+                            let id = child.getAttribute("id");  
+                            let id_arr = id.split("°");
+
+                            let y = parseInt(id_arr[0]);
+                            let x = parseInt(id_arr[1]);
+                            let tab = ["magenta", "white", "cyan", "white", "magenta", "white", "cyan", "black"];
+
+                            let zi = (x == width ? x+1 : x+2);
+                            let zj = (y == height ? y+1 : y+2);
+                            let j = (y == 1 ? y : y-1);
+
+                            while(j<zj){
+                                let i=(x == 1 ? x : x-1);
+                                while(i<zi){
+                                    let cas=document.getElementById(j+"°"+i);
+                                    if (are_return) {
+                                        cas.style.backgroundColor = "unset";
+                                        cas.style.transform = "scale(0.8)";
+                                        cas.style.borderRadius = "100%";
+                                        cas.style.zIndex = "-1";
+                                        are_return = false;
+                                        timeout(cas);
+                                    }else{
+                                        cas.style.borderRadius = "0px";
+                                        let t = parseInt(Math.random() * (9 + -1)) + -1;
+                                        cas.style.backgroundColor = tab[t];
+                                        cas.style.transform = "scale(1)";
+                                        cas.style.borderRadius = "0";
+                                        cas.style.zIndex = "10";
+                                        are_return = true;
+                                        timeout(cas);
+                                    }
+                                    i++;
+                                }
+                                j++;
+                                i=x-1;
+                            }
+                        })
+                    })
+                })
+            }
+            createGrid();
+        </script>
+    </body>
+</html>
