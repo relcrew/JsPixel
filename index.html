@@ -70,9 +70,11 @@
     <body>
         <header>
             <button onclick="G(1)">noTimeout</button>
+            <input type="range" value="50" style="margin-left: 10px;">
             <button onclick="G(2)">noTransition</button>
             <button onclick="G(3)">randomColor</button>
             <button onclick="createGrid()">clear</button>
+            
         </header>
         <div class="block">
             
@@ -123,12 +125,13 @@
                 }
             }
             function timeout(cube){
+                let slider = document.querySelector('input').value;
                 if(Timeout){
                     setTimeout(() => {
                         cube.style.backgroundColor = null;
                         cube.style.borderRadius = null;
                         cube.style.zIndex = null;
-                    }, 1000);
+                    }, slider*20);
                 }
             }   
             function cursor(){
