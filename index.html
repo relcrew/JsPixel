@@ -3,7 +3,6 @@
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>JsPixel</title>
     </head>
@@ -21,30 +20,29 @@
         header{
             display: flex;
             align-items: center;
-            background-color: aliceblue;
+            background-color: #f0f8ff;
             position: absolute;
             top: 0;
             width: 100%;
             height: 50px;
             z-index: 100;
-            
+            gap: 10px;
         }
         button{
             font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             height: 30px;
             width: fit;
             background-color: #000;
-            color: aliceblue;
+            color: #f0f8ff;
             border: none;
             border-radius: 7px;
-            margin-left: 10px;
             transition: ease-in-out 0.17s;
         }
         button:hover{
-            background-color: blue;
+            background-color: #0000ff;
         }
         button:hover:last-child{
-            background-color: red;
+            background-color: #ff0000;
         }
         .block{
             margin: 0;
@@ -65,6 +63,9 @@
             width: fit-content;
             transform: none;
         }
+        #color{
+            width: 40px;
+        }
         .column:hover{
             transform: none;
         }
@@ -79,10 +80,13 @@
     </style>
     <body>
         <header>
-            <button onclick="G(1)">NoTimeout</button>
-            <input type="range" value="50" style="margin-left: 10px;">
-            <button onclick="G(2)">NoTransition</button>
-            <button onclick="G(3)">RandomColor</button>
+            <button style="margin-left: 10px" onclick="choice(1)" class="1">NoTimeout</button>
+            <input type="range" value="50">
+            <button onclick="choice(2)" class="2">NoTransition</button>
+            <input type="color" id="color" class="C1" value="#ff00ff"/>
+            <input type="color" id="color" class="C2" value="#00ffff"/>
+            <input type="color" id="color" class="C3" value="#ffffff"/>
+            <button onclick="choice(3)" class="3">RandomColor</button>
             <button onclick="createGrid()">Clear</button>
         </header>
         <div class="block">
@@ -99,9 +103,12 @@
                 let c=1;
                 let s=1;
                 document.querySelector(".block").innerHTML = ' ';
+                document.querySelector('.C1').value = "#ff00ff";
+                document.querySelector('.C2').value = "#00ffff";
+                document.querySelector('.C3').value = "#ffffff";
                 while(c<width){
                     let firstDiv = document.createElement('div');
-                    firstDiv.id= c;
+                    firstDiv.id = c;
                     firstDiv.classList.add('column');
                     document.querySelector(".block").appendChild(firstDiv);
                     while(s<height){
@@ -112,12 +119,11 @@
                     s=1;
                 };
                 cursor();
-            };
-            function G(a){
-                if(a==1){
-                    Timeout = (Timeout == true ? false : true);
-                }
-                if(a==2){
+            }
+
+            function choice(a){
+                switch (a) {
+                case 1:
                     let element = document.querySelectorAll('div');
                     element.forEach((element)=>{
                         if(element.className == 'T'){
@@ -126,11 +132,19 @@
                             element.classList.add('T');
                         }
                     })
-                }
-                if(a==3){
+                    break;
+                case 2:
+                    Timeout = (Timeout == true ? false : true);
+                    break;
+                case 3:
                     Rtable = (Rtable == true ? false : true);
+                    break;
+        
+                default:
+                    break;
                 }
             }
+
             function timeout(cube){
                 let slider = document.querySelector('input').value;
                 if(Timeout){
@@ -141,6 +155,7 @@
                     }, slider*20);
                 }
             }   
+
             function cursor(){
                 const column = document.querySelectorAll('.column');
                 column.forEach((parent)=>{
@@ -153,8 +168,14 @@
 
                             let y = parseInt(id_arr[0]);
                             let x = parseInt(id_arr[1]);
-                            let tab = ["magenta", "white", "cyan", "white", "magenta", "white", "cyan", "black"];
+                            
 
+                            let C1 = document.querySelector('.C1').value;
+                            let C2 = document.querySelector('.C2').value;
+                            let C3 = document.querySelector('.C3').value;
+                            
+                            let tab = [C1, C3, C2, C3, C1, C3, C2, C3];
+                            
                             let zi = (x == width ? x+1 : x+2);
                             let zj = (y == height ? y+1 : y+2);
                             let j = (y == 1 ? y : y-1);
@@ -163,7 +184,7 @@
                                 let i=(x == 1 ? x : x-1);
                                 while(i<zi){
                                     let cas=document.getElementById(j+"°"+i);
-                                    if (are_return) {
+                                    if(are_return){
                                         cas.style.backgroundColor = "unset";
                                         cas.style.transform = "scale(0.8)";
                                         cas.style.borderRadius = "100%";
