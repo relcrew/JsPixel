@@ -16,5 +16,5 @@ This is a web-based pixel art implemented using HTML, CSS, and JavaScript.
 ## Usage
 
 Feel free to explore and experiment with the application to create your own pixel art designs!
-here is my personnal web page where you can try this project [Link here](https://corentinviry.fr/testfolder/index.html).
+here is my personnal web page where you can try this project [Link here](https://corentinviry.fr/projects/jsPixel/index.html).
 
