@@ -31,7 +31,6 @@
         button{
             font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             height: 30px;
-            width: fit;
             background-color: #000;
             color: #f0f8ff;
             border: none;
@@ -63,7 +62,7 @@
             width: fit-content;
             transform: none;
         }
-        #color{
+        .color{
             width: 40px;
         }
         .column:hover{
@@ -76,16 +75,18 @@
         }
         .T{
             transition: ease-out 0.3s;
+            background-color: black;
         }
+        
     </style>
     <body>
         <header>
             <button style="margin-left: 10px" onclick="choice(1)" class="1">NoTimeout</button>
             <input type="range" value="50">
             <button onclick="choice(2)" class="2">NoTransition</button>
-            <input type="color" id="color" class="C1" value="#ff00ff"/>
-            <input type="color" id="color" class="C2" value="#00ffff"/>
-            <input type="color" id="color" class="C3" value="#ffffff"/>
+            <input type="color" class="color C1" value="#ff00ff"/>
+            <input type="color" class="color C2" value="#00ffff"/>
+            <input type="color" class="color C3" value="#ffffff"/>
             <button onclick="choice(3)" class="3">RandomColor</button>
             <button onclick="createGrid()">Clear</button>
         </header>
@@ -96,8 +97,8 @@
             let are_return = false;
             let Timeout = true;
             let Rtable = false;
-            let height = parseInt((screen.height)/30);
-            let width = parseInt(screen.width/30)+2;
+            let height = Math.floor(window.innerHeight / 30);
+            let width = Math.floor(window.innerWidth / 30) + 2;
 
             function createGrid(){
                 let c=1;
@@ -112,7 +113,7 @@
                     firstDiv.classList.add('column');
                     document.querySelector(".block").appendChild(firstDiv);
                     while(s<height){
-                        firstDiv.innerHTML += '<div id="'+s+'°'+c+'" class="T" style="background-color: black;"></div>';
+                        firstDiv.innerHTML += '<div id="'+s+'°'+c+'" class="T"></div>';
                         s++;
                     };
                     c++;
@@ -124,15 +125,16 @@
             function choice(a){
                 switch (a) {
                 case 1:
-                    let element = document.querySelectorAll('div');
-                    element.forEach((element)=>{
-                        if(element.className == 'T'){
+                    let elements = document.querySelectorAll('div');
+                    elements.forEach((element) => {
+                        if (element.classList.contains('T')) {
                             element.classList.remove('T');
-                        }else{
+                        } else {
                             element.classList.add('T');
                         }
-                    })
+                    });
                     break;
+
                 case 2:
                     Timeout = (Timeout == true ? false : true);
                     break;
@@ -192,7 +194,7 @@
                                         are_return = false;
                                     }else{
                                         cas.style.borderRadius = "0px";
-                                        let t = parseInt(Math.random() * (9 + -1)) + -1;
+                                        let t = Math.floor(Math.random() * tab.length);
                                         if(Rtable){
                                             cas.style.backgroundColor = "#"+Math.floor(Math.random()*16777215).toString(16);
                                         }else{
